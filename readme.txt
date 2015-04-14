@@ -29,6 +29,8 @@ Where:
 * border = enable the border on the iFrame.  Default = 0.
 * scroll = enable the scroll bar on the iFrame.  Default = no.
 
+Note: Auto re-sizing of the iFrame for cross domain sites does not work, this is a security protection provided by the browser and there is no way around it.
+
 == Installation ==
 
 1. Extract the archive file into your plugins directory in the auto-iframe folder.
