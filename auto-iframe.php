@@ -9,7 +9,83 @@ Author URI: http://toolstack.com/
 License: GPL2
 */
 
-add_shortcode( 'auto-iframe', 'auto_iframe_shortcode' );
+add_action( 'init', 'auto_iframe_init' );
+
+function auto_iframe_init() {
+	add_shortcode( 'auto-iframe', 'auto_iframe_shortcode' );
+	
+	// ShortCake support if loaded.		
+	if( function_exists( 'shortcode_ui_register_for_shortcode' ) ) {
+		shortcode_ui_register_for_shortcode(
+			'auto-iframe',
+			array(
+
+				// Display label. String. Required.
+				'label' => 'Auto iFrame',
+
+				// Icon/image for shortcode. Optional. src or dashicons-$icon. Defaults to carrot.
+				'listItemImage' => '<img src="' . plugin_dir_url(__FILE__) . 'icon.png">',
+
+				// Available shortcode attributes and default values. Required. Array.
+				// Attribute model expects 'attr', 'type' and 'label'
+				// Supported field types: text, checkbox, textarea, radio, select, email, url, number, and date.
+				'attrs' => array(
+					array(
+						'label' 	  => 'Link',
+						'attr'  	  => 'link',
+						'type'  	  => 'url',
+						'description' => 'The remote URL of the site to create the iFrame for.',
+						'meta'  	  => array('size'=>'45'),
+					),
+					array(
+						'label'       => 'Tag',
+						'attr'        => 'tag',
+						'type'        => 'text',
+						'description' => 'An optional tag to set the id of the iFrame to if you are including multiple iFrames on the same page.',
+						'meta'  	  => array('size'=>'15'),
+					),
+					array(
+						'label'       => 'Width',
+						'attr'        => 'width',
+						'type'        => 'text',
+						'description' => 'The width of the iFrame, percentage or px.',
+						'meta'  	  => array('size'=>'5'),
+					),
+					array(
+						'label'       => 'Height',
+						'attr'        => 'height',
+						'type'        => 'text',
+						'description' => 'The height of the iFrame, percentage or px.  This will be the initial height if auto size is enabled.',
+						'meta'  	  => array('size'=>'5'),
+					),
+					array(
+						'label'       => 'Autosize',
+						'attr'        => 'autosize',
+						'type'        => 'radio',
+						'description' => 'Enable the automatic resize of the height of the iFrame based on content.',
+						'options'	  => array( 'yes' => 'Yes', 'no' => 'No'),
+					),
+					array(
+						'label'       => 'Fudge Factor',
+						'attr'        => 'fudge',
+						'type'        => 'text',
+						'description' => 'A fudge factor to apply when changing the height (integer number, no "px").',
+						'meta'        => array( 'size' => 5 ),
+					),
+					array(
+						'label'       => 'Border',
+						'attr'        => 'border',
+						'type'        => 'text',
+						'description' => 'Enable the border on the iFrame.',
+						'meta'        => array( 'size' => 5 ),
+					),
+				),
+			)
+		);
+	}
+	
+}
+
 
 function auto_iframe_shortcode( $atts ) {
 	/*
@@ -30,9 +106,6 @@ function auto_iframe_shortcode( $atts ) {
 
 	// We don't have any parameters, just return a blank string.
 	if( !is_array( $atts ) ) { return ''; }
-	
-	// Enqueue the javascript and jquery code.
-	wp_enqueue_script( 'auto_iframe_js', plugins_url( 'auto-iframe.js', __FILE__ ), array( 'jquery' ) );
 	
 	// Get the link.
 	$link = '';
@@ -63,15 +136,20 @@ function auto_iframe_shortcode( $atts ) {
 	$scroll = 'no';
 	if( array_key_exists( 'scroll', $atts ) ) { if( strtolower( $atts['autosize'] ) != 'yes' ) { $scroll = 'yes'; } ; }
 	
-	$result = '<script type="text/javascript">// <![CDATA[' . "\n";
-	$result .= 'jQuery(document).ready(function(){' . "\n";
-	$result .= '	setInterval( function() { AutoiFrameAdjustiFrameHeight( \'' . $tag . '\', 200); }, 1000 );' . "\n";
-	$result .= '});' . "\n";
-	$result .= '// ]]></script>' . "\n";
+	if( $autosize ) {
+		// Enqueue the javascript and jquery code.
+		wp_enqueue_script( 'auto_iframe_js', plugins_url( 'auto-iframe.js', __FILE__ ), array( 'jquery' ) );
+	
+		$result = '<script type="text/javascript">// <![CDATA[' . "\n";
+		$result .= 'jQuery(document).ready(function(){' . "\n";
+		$result .= '	setInterval( function() { AutoiFrameAdjustiFrameHeight( \'' . $tag . '\', 200); }, 1000 );' . "\n";
+		$result .= '});' . "\n";
+		$result .= '// ]]></script>' . "\n";
+	}
 
-	$result .= '<iframe id="' . $tag . '" src="' . $link . '" width="' . $width . '" height="' . $height . '" frameborder="' . $border . '" scrolling="' . $scroll . '" onload="AutoiFrameAdjustiFrameHeight(\'' . $tag . '\',' . $fudge . ');"></iframe>';
+	$result .= '<iframe id="' . $tag . '" src="' . $link . '" width="' . $width . '" height="auto" frameborder="' . $border . '" scrolling="' . $scroll . '" onload="AutoiFrameAdjustiFrameHeight(\'' . $tag . '\',' . $fudge . ');"></iframe>';
 
 	return $result;
-}		
+}
 
 ?>

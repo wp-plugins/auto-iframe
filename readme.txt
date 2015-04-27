@@ -31,6 +31,8 @@ Where:
 
 Note: Auto re-sizing of the iFrame for cross domain sites does not work, this is a security protection provided by the browser and there is no way around it.
 
+Now supports (Shortcode UI)[https://github.com/fusioneng/Shortcake] (aka Shortcake)!
+
 == Installation ==
 
 1. Extract the archive file into your plugins directory in the auto-iframe folder.
@@ -45,10 +47,13 @@ Note: Auto re-sizing of the iFrame for cross domain sites does not work, this is
 None at this time.
 
 == Upgrade Notice ==
-= 0.5 =
+= 1.0 =
 None at this time.
 
 == Changelog == 
+= 1.0 =
+* Added Shortcode UI support (see https://github.com/fusioneng/Shortcake for details)
+
 = 0.5 =
 * Initial release.
 
