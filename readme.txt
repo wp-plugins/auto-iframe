@@ -5,7 +5,7 @@ Author URI: http://toolstack.com
 Tags: Resize, iFrame
 Requires at least: 3.0
 Tested up to: 4.2
-Stable tag: 0.5
+Stable tag: 1.0
 License: GPL2
 
 A quick and easy shortcode to embed iframe's that resize to the content of the remote site.
@@ -52,8 +52,10 @@ None at this time.
 
 == Changelog == 
 = 1.0 =
+* Release date: May 15, 2015
 * Added Shortcode UI support (see https://github.com/fusioneng/Shortcake for details)
 
 = 0.5 =
+* Release date: March 25, 2015
 * Initial release.
 
