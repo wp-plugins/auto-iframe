@@ -4,8 +4,8 @@ Plugin URI: http://toolstack.com/auto-iframe
 Author URI: http://toolstack.com
 Tags: Resize, iFrame
 Requires at least: 3.0
-Tested up to: 4.2
-Stable tag: 1.0
+Tested up to: 4.3
+Stable tag: 1.1
 License: GPL2
 
 A quick and easy shortcode to embed iframe's that resize to the content of the remote site.
@@ -51,6 +51,10 @@ None at this time.
 None at this time.
 
 == Changelog == 
+= 1.1 =
+* Release date: August 11, 2015
+* Fixed: Make sure to check the frame element and sub-objects exist before using them later.
+
 = 1.0 =
 * Release date: May 15, 2015
 * Added Shortcode UI support (see https://github.com/fusioneng/Shortcake for details)
